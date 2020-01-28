@@ -18,10 +18,10 @@ public class ApplicationUserController {
     @Autowired private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
-    public RedirectView createNewApplicationUser(String username, String password, String firstName, String lastname, int dateOfBirth, String bio){
+    public RedirectView createNewApplicationUser(String username, String password, String firstName, String lastName, int dateOfBirth, String bio){
        //make new user, salt and has the password
         //passwordEncoder.encode(password) salts and hashes.
-        ApplicationUser newUser = new ApplicationUser(username, passwordEncoder.encode(password), firstName, lastname, dateOfBirth, bio);
+        ApplicationUser newUser = new ApplicationUser(username, passwordEncoder.encode(password), firstName, lastName, dateOfBirth, bio);
        //save new user to database.
         applicationUserRepository.save(newUser);
         //send them back home
@@ -32,7 +32,7 @@ public class ApplicationUserController {
 //    public RedirectView login(){
 //        return new RedirectView(("/");
 //    }
-    @GetMapping("login")
+    @GetMapping("/login")
     public String showLogInForm(){
         return "login";
     }
