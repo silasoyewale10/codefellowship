@@ -37,5 +37,7 @@ Implemented in this app is the database. To view the song table, follow the comm
 1. in your terminal, run psql
 2. type \c codefellowship
 3. type \dt to see all tables in the database.
-You should see one tabke called application_user
+You should see one tabke called application_user and another called post
 type select * from application_user; to see the list of application users
+type select * from application_user; to see the list of posts per user.
+
