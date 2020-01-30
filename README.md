@@ -41,3 +41,5 @@ You should see one tabke called application_user and another called post
 type select * from application_user; to see the list of application users
 type select * from application_user; to see the list of posts per user.
 
+I implemented many to many relationship for users for users to be able to follow each other. The new table mingling was created to have the left part as the people I am following and the right part as the people following me. 
+
