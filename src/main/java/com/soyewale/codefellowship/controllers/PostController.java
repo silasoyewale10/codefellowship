@@ -24,5 +24,13 @@ public class PostController {
         postRepository.save(post);
         return new RedirectView("/users/" + id);
     }
+@PostMapping("/post/mingling")
+    public RedirectView generateMingling(long id, long iDeyFollowThemId, long deyTheyFollowThemId ){
+        Post bh = postRepository.findById(iDeyFollowThemId).get();
+        Post dis = postRepository.findById(deyTheyFollowThemId).get();
+        bh.takeOutIAmFollowing(dis);
+        postRepository.save(bh);
 
+        return new RedirectView("/users/" + id);
+}
 }
