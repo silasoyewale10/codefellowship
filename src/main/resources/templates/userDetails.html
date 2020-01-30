@@ -23,8 +23,35 @@
     <ul>
         <li th:each="post : ${userWeAreVisiting.posts}">
             <p>[[${post.body}]]  [[${post.createdAt}]]</p>
+            <ul>
+                <li th:each="dis :${post.iAmFollowing}" th:text="${post.body}">
+
+                </li>
+            </ul>
         </li>
     </ul>
+
+
+    <form action="/post/mingling" method="POST">
+<h3>Mingle with someone</h3>
+        <label for="iDeyFollowThemId">I am Following</label>
+        <select name="iDeyFollowThemId">
+            <option th:each="post : ${userWeAreVisiting.posts}" th:value="${post.id}"> [[${post.body}]]  [[${post.createdAt}]]</option>
+        </select>
+        <label for="deyTheyFollowThemId">Following Me</label>
+        <select name="deyTheyFollowMeId">
+            <option th:each="post : ${userWeAreVisiting.posts}" th:value="${post.id}"> [[${post.body}]]  [[${post.createdAt}]]</option>
+        </select>
+
+        <input type="hidden" th:value="${userWeAreVisiting.id}" name="id">
+        
+        <input type="submit">
+    </form>
+
+
+
+
+
 
     <input type="hidden" th:value="${userIdWeAreVisiting}" name="id">
     Body<input type="text"name="body">
