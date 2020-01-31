@@ -10,24 +10,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    @ManyToMany
-            @JoinTable(
-                    name="mingling",
-                    joinColumns = {@JoinColumn(name="iDeyFollowThem")},
-                    inverseJoinColumns = {@JoinColumn(name="theyDeyFollowMe")}
-            )
-    Set<Post> iAmFollowing;
-    public Set<Post> getIAmFollowing(){
-        return this.iAmFollowing;
-    }
 
-    public void takeOutIAmFollowing(Post disc ){
-        this.iAmFollowing.add(disc);
-
-    }
-
-    @ManyToMany(mappedBy = "iAmFollowing")
-    Set<Post> followingMe;
 
     @ManyToOne
     ApplicationUser applicationUser;
@@ -36,8 +19,23 @@ public class Post {
     public String createdAt;
     boolean kidsAppropriate;
 
+
+    public Post(ApplicationUser applicationUser, String body, String createdAt, boolean kidsAppropriate) {
+        this.applicationUser = applicationUser;
+        this.body = body;
+        this.createdAt = createdAt;
+        this.kidsAppropriate = kidsAppropriate;
+    }
+    public Post(){
+
+    }
+
     public long getId() {
         return id;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
     }
 
     public ApplicationUser getApplicationUser() {
@@ -55,14 +53,7 @@ public class Post {
     public boolean isKidsAppropriate() {
         return kidsAppropriate;
     }
-    public Post(ApplicationUser applicationUser, String body, String createdAt, boolean kidsAppropriate) {
-        this.applicationUser = applicationUser;
-        this.body = body;
-        this.createdAt = createdAt;
-        this.kidsAppropriate = kidsAppropriate;
-    }
-    public Post(){
 
-    }
+
 }
 
