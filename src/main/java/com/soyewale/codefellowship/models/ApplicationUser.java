@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -14,12 +15,26 @@ public class ApplicationUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
 
+
+    @ManyToMany
+    @JoinTable(
+            name="mingling",
+            joinColumns = {@JoinColumn(name="iDeyFollowThem")},
+            inverseJoinColumns = {@JoinColumn(name="theyDeyFollowMe")}
+    )
+    public Set<ApplicationUser> usersFollowingMe;
+
+    public long getId() {
+        return id;
+    }
+
+    @ManyToMany(mappedBy = "usersFollowingMe")
+    public Set<ApplicationUser> usersIAmFollowing;
+
+
     @OneToMany(mappedBy = "applicationUser")  //must match property name on Post
     List<Post> posts ;
 
-    public List<Post> getPosts(){
-        return this.posts;
-    }
 
     String username;
     String password;
@@ -40,6 +55,46 @@ public class ApplicationUser implements UserDetails {
         this.dateOfBirth = dateOfBirth;
         this.bio = bio;
     }
+
+
+//    @ManyToMany
+//    @JoinTable(
+//            name="mingling",
+//            joinColumns = {@JoinColumn(name="iDeyFollowThem")},
+//            inverseJoinColumns = {@JoinColumn(name="theyDeyFollowMe")}
+//    )
+//    Set<ApplicationUser> iAmFollowing;
+//
+//
+//    public Set<ApplicationUser> getIAmFollowing(){
+//        return this.iAmFollowing;
+//    }
+//
+//    public void takeOutIAmFollowing(ApplicationUser disc ){
+//        this.iAmFollowing.add(disc);
+//
+//    }
+//
+//    public Set<ApplicationUser> getFollowingMe() {
+//        return followingMe;
+//    }
+//
+//    @ManyToMany(mappedBy = "iAmFollowing")
+//    Set<ApplicationUser> followingMe;
+//
+//
+
+
+
+
+
+
+
+    public List<Post> getPosts(){
+        return this.posts;
+    }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

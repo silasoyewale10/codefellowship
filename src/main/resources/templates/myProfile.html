@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>My Posts</h1>
+<form action="/myProfile" method="POST">
+
+    Body<input type="text"name="body">
+    kidsAppropriate<input type="checkbox"name="appropriate">
+    <input type="submit">
+    <br> <br>
+</form>
+
+<ul  th:each="post : ${loggedInUser.posts}">
+
+    <li th:text="${post.body}"></li>
+    <li th:text="${post.createdAt}"></li>
+
+</ul>
+<img src="/images/deep_learning.gif">
+
+</body>
+</html>

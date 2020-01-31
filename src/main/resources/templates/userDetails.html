@@ -17,51 +17,22 @@
     </ul>
 </nav>
 <h1>This is  [[${usernameWeAreVisiting}]]'s detail page, you are visiting them [[${principalTheAndroid}]]</h1>
-<h2>Make a Post</h2>
-<form action="/postDetails" method="POST">
-
-    <ul>
-        <li th:each="post : ${userWeAreVisiting.posts}">
-            <p>[[${post.body}]]  [[${post.createdAt}]]</p>
-            <ul>
-                <li th:each="dis :${post.iAmFollowing}" th:text="${post.body}">
-
-                </li>
-            </ul>
-        </li>
-    </ul>
+<ul>
+    <li th:each="follower : ${userWeAreVisiting.usersFollowingMe}" th:text="${follower.username}"></li>
+</ul>
+<ul>
+    <li th:each="post : ${userWeAreVisiting.posts}">
+        <p>[[${post.body}]]  [[${post.createdAt}]]</p>
+    </li>
+</ul>
 
 
-    <form action="/post/mingling" method="POST">
-<h3>Mingle with someone</h3>
-        <label for="iDeyFollowThemId">I am Following</label>
-        <select name="iDeyFollowThemId">
-            <option th:each="post : ${userWeAreVisiting.posts}" th:value="${post.id}"> [[${post.body}]]  [[${post.createdAt}]]</option>
-        </select>
-        <label for="deyTheyFollowThemId">Following Me</label>
-        <select name="deyTheyFollowMeId">
-            <option th:each="post : ${userWeAreVisiting.posts}" th:value="${post.id}"> [[${post.body}]]  [[${post.createdAt}]]</option>
-        </select>
+<form th:action="'/followMe/'+${userWeAreVisiting.id}" method="POST">
 
-        <input type="hidden" th:value="${userWeAreVisiting.id}" name="id">
-        
-        <input type="submit">
-    </form>
-
-
-
-
-
-
-    <input type="hidden" th:value="${userIdWeAreVisiting}" name="id">
-    Body<input type="text"name="body">
-    createdAt<input type="text"name="createdAt">
-    kidsAppropriate<input type="checkbox"name="feral">
-    <input type="submit">
-    <br> <br>
-    
+    <input type="Submit" value="Follow Me">
 </form>
-<img src="/images/deep_learning.gif">
+
+
 
 </body>
 </html>

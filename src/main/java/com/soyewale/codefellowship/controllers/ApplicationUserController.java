@@ -2,6 +2,8 @@ package com.soyewale.codefellowship.controllers;
 
 import com.soyewale.codefellowship.models.ApplicationUser;
 import com.soyewale.codefellowship.models.ApplicationUserRepository;
+import com.soyewale.codefellowship.models.Post;
+import com.soyewale.codefellowship.models.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 public class ApplicationUserController {
@@ -19,7 +23,12 @@ public class ApplicationUserController {
     @Autowired
     ApplicationUserRepository applicationUserRepository;
 
-    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired
+    PostRepository postRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @PostMapping("/signup")
     public RedirectView createNewApplicationUser(String username, String password, String firstName, String lastName, String dateOfBirth, String bio){
@@ -44,11 +53,39 @@ public class ApplicationUserController {
     @GetMapping("/users/{id}") //id is dynamic
     public String showUserDetails(@ PathVariable long id, Principal p, Model m){
         ApplicationUser theUser = applicationUserRepository.findById(id).get();  //create an instance of the application user and find and get id
-        m.addAttribute("usernameWeAreVisiting", theUser.getUsername());  //passs that as the value of the username key.
-        m.addAttribute("userIdWeAreVisiting", theUser.id);
+//        m.addAttribute("usernameWeAreVisiting", theUser.getUsername());  //passs that as the value of the username key.
+//        m.addAttribute("userIdWeAreVisiting", theUser.id);
         m.addAttribute("userWeAreVisiting", theUser);
-        m.addAttribute("principalTheAndroid", p.getName()); //get name of who is logged in.
+//        m.addAttribute("principalTheAndroid", p.getName()); //get name of who is logged in.
         return "userDetails";
 
+    }
+
+    @GetMapping("/myProfile")
+    public String showMyProfile(Principal p, Model m){
+        ApplicationUser user = applicationUserRepository.findByUsername(p.getName());
+        m.addAttribute("loggedInUser", user); // the user has all the attributes of the application user.
+        return "myProfile";
+    }
+
+    @PostMapping("/myProfile")
+    public RedirectView createPost(Principal p, Model m, String body, boolean appropriate){
+        String now = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        ApplicationUser user = applicationUserRepository.findByUsername(p.getName());
+        Post newPost = new Post(user, body, now, appropriate);
+        postRepository.save(newPost);
+        return new RedirectView("myProfile");
+
+    }
+
+//    @PostMapping()
+
+    @PostMapping("/followMe/{id}")
+    public RedirectView follow(@PathVariable long id, Principal p){
+        ApplicationUser loggedInUser = applicationUserRepository.findByUsername(p.getName());
+        ApplicationUser toBeFollowed = applicationUserRepository.findById(id).get();
+        loggedInUser.usersFollowingMe.add(toBeFollowed);
+        applicationUserRepository.save(toBeFollowed);
+        return new RedirectView("/users/" + toBeFollowed.getId());
     }
 }

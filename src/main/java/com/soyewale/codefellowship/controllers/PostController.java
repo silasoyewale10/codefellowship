@@ -16,6 +16,9 @@ public class PostController {
 
     @Autowired
     PostRepository postRepository;
+
+
+
     @PostMapping("/postDetails")
     public RedirectView makeAPost(long id, String body, String createdAt, boolean kidsAppropriate){
         ApplicationUser postInitiator = applicationUserRepository.findById(id).get();
@@ -26,10 +29,16 @@ public class PostController {
     }
 @PostMapping("/post/mingling")
     public RedirectView generateMingling(long id, long iDeyFollowThemId, long deyTheyFollowThemId ){
-        Post bh = postRepository.findById(iDeyFollowThemId).get();
-        Post dis = postRepository.findById(deyTheyFollowThemId).get();
-        bh.takeOutIAmFollowing(dis);
-        postRepository.save(bh);
+
+        ApplicationUser bh = applicationUserRepository.findById(iDeyFollowThemId).get();
+        ApplicationUser dis = applicationUserRepository.findById(deyTheyFollowThemId).get();
+//        bh.takeOutIAmFollowing(dis);
+        applicationUserRepository.save(bh);
+
+//        Post bh = postRepository.findById(iDeyFollowThemId).get();
+//        Post dis = postRepository.findById(deyTheyFollowThemId).get();
+//        bh.takeOutIAmFollowing(dis);
+//        postRepository.save(bh);
 
         return new RedirectView("/users/" + id);
 }
